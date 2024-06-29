@@ -1,10 +1,10 @@
 # Author: Derek Greene
 # Date: 6/27/2024
 # Description: This script connects to a websocket server 'Certstream Server Go-
-# 'https://github.com/d-Rickyy-b/certstream-server-go' to continuously receive 
-# domain data from CT Logs, saves the received data into a JSON file, and performs 
-# ZDNS-'https://github.com/zmap/zdns' scans on the received domains. The results of
-# the ZDNS scans are saved into separate JSON files for CAA and TXT records.
+# 'https://github.com/d-Rickyy-b/certstream-server-go' (which is ran as a docker container)
+# to continuously receive domain data from CT Logs, saves the received data into a JSON 
+# file, and performs ZDNS-'https://github.com/zmap/zdns' scans on the received domains. 
+# The results of the ZDNS scans are saved into separate JSON files for CAA and TXT records.
 
 import asyncio
 import json
@@ -83,6 +83,14 @@ async def connect_to_server(uri, domains):
         with open(output_file, "a") as file:
             file.write("\n]")  
 
+async def keep_alive(websocket):
+    try:
+        while True:
+            await asyncio.sleep(30)
+            await websocket.ping()
+    except asyncio.CancelledError:
+        pass
+
 async def main():
     uri = "ws://localhost:8080/domains-only"
     domains = []
@@ -92,6 +100,7 @@ async def main():
     try:
         async with websockets.connect(uri) as websocket:
             asyncio.create_task(connect_to_server(uri, domains))
+            keep_alive_task = asyncio.create_task(keep_alive(websocket))
 
             while True:
                 if domains:
@@ -102,6 +111,8 @@ async def main():
         print(f"Connection closed: {e}")
     except Exception as e:
         print(f"Error: {e}")
+    finally:
+        keep_alive_task.cancel()
 
 if __name__ == "__main__":
     asyncio.run(main())
