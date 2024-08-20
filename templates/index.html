@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>CT Domain Data</title>
+    <style>
+        body {
+            font-family: 'Courier New', Courier, monospace; 
+            background-color: #000; 
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+        h1 {
+            text-align: center; 
+            margin-top: 20px;
+            font-size: 60px;
+        }
+        strong {
+            background: linear-gradient(45deg, #00ff00, #00ffff); 
+            -webkit-background-clip: text; 
+            -moz-background-clip: text;
+            background-clip: text; 
+            color: transparent;
+        }
+        p {
+            text-align: center;
+            font-size: 30px;
+            margin: 20px;
+            background: linear-gradient(45deg, #00ff00, #00ffff);
+            -webkit-background-clip: text;
+            -moz-background-clip: text; 
+            background-clip: text; 
+            color: transparent; 
+        }
+        .vulnerable-domains {
+            margin-bottom: 40px; 
+        }
+        ul {
+            list-style-type: none; 
+            text-align: center; 
+            font-size: 20px; 
+            margin: 20px auto; 
+            padding: 0;
+            color: transparent; 
+            width: 80%;
+        }
+        li {
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #00ff00, #00ffff);
+            -webkit-background-clip: text;
+            -moz-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        footer {
+            font-size: 10px;
+            text-align: center;
+            margin-top: 30px;
+            padding: 10px;
+            color: #00ff00;
+        }
+        .total {
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <h1><strong>CT Domain Data</strong></h1>
+    <p class="vulnerable-domains"><strong>Vulnerable domains discovered: {{ total_records }}</strong></p>
+
+    <p>This application identifies disposable email addresses used as contact methods in WHOIS records. Domains are collected using Certstream Server Go which streams Certificate Transparency logs continuously to a websocket connection.
+        Domains are extracted from the data stream and whois queries are subsequently made to identify contact email addresses which are compared against a list of known disposable domains.
+        If a disposable email address is found, the domain is flagged as vulnerable and the data is stored to a mysql database. The total number of vulnerable domains discovered is displayed above.
+    </p>
+  
+    <footer>
+        <p class='total'><strong>Made with &#128154; by Derek R. Greene</strong></p>
+    </footer>
+</body>
+</html>
