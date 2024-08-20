@@ -71,7 +71,7 @@
     <p class="vulnerable-domains"><strong>Vulnerable domains discovered: {{ total_records }}</strong></p>
 
     <p>This application identifies disposable email addresses used as contact methods in WHOIS records. Domains are collected using Certstream Server Go which streams Certificate Transparency logs continuously to a websocket connection.
-        Domains are extracted from the data stream and whois queries are subsequently made to identify contact email addresses which are compared against a list of known disposable email domains.
+        Domains are extracted from the data stream and whois queries are subsequently made to identify contact email addresses which are compared against a list of 15k+ known disposable email domains.
         If a disposable email address is found, the domain is flagged as vulnerable and the data is stored to a mysql database. The total number of vulnerable domains discovered is displayed above.
     </p>
   
