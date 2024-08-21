@@ -7,6 +7,14 @@ import pymysql.cursors
 import websockets
 import whois
 from datetime import datetime
+from dotenv import load_dotenv, find_dotenv
+
+load_dotenv(find_dotenv())
+
+host = os.environ.get("DB_HOST")
+user = os.environ.get("DB_USER")
+passwd = os.environ.get("DB_PASSWD")
+db = os.environ.get("DB_NAME")
 
 def clean_domain(domain):
     """Clean up domain names by removing 'www.' and '*.' prefixes."""
@@ -192,7 +200,7 @@ async def run_cycle(uri, allowed_domains, db_connection, duration=30):
         await process_domains_file(allowed_domains, db_connection)
         await asyncio.sleep(duration)
 
-def connect_to_database(host="127.0.0.1", user="derek", passwd="W0rthit?", db="domain_data"):
+def connect_to_database(host=host, user=user, passwd=passwd, db=db):
     """Connect to the database using pymysql."""
     db_connection = pymysql.connect(host=host, user=user, password=passwd, database=db, cursorclass=pymysql.cursors.DictCursor)
     print("Connected to SQL database")
